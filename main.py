@@ -3,8 +3,10 @@ import tensorflow as tf
 import numpy as np
 import os
 
+
 def _sigmoid(x):
     return 1. / ((1. + np.exp(-x)) + np.finfo(np.float32).eps)
+
 
 def use_tflite_model(name, img_path):
     # check model type
@@ -15,7 +17,6 @@ def use_tflite_model(name, img_path):
     # Load TFLite model and allocate tensors.
     interpreter = tf.lite.Interpreter(model_path=name)
     interpreter.allocate_tensors()
-
 
     # Get input and output tensors.
     input_details = interpreter.get_input_details()
@@ -59,10 +60,11 @@ def use_tflite_model(name, img_path):
 
     resize_factor = 5
 
-    img_cv2 = cv2.resize(image, (resize_factor * img_width, resize_factor * img_height), interpolation=cv2.INTER_NEAREST)
+    img_cv2 = cv2.resize(image, (resize_factor * img_width, resize_factor * img_height),
+                         interpolation=cv2.INTER_NEAREST)
 
-    cv2.drawMarker(img_cv2, (x * resize_factor, y * resize_factor), color, cv2.MARKER_CROSS, resize_factor * 2, max(2, resize_factor))
-
+    cv2.drawMarker(img_cv2, (x * resize_factor, y * resize_factor), color, cv2.MARKER_CROSS, resize_factor * 2,
+                   max(2, resize_factor))
 
     # Create output folder if it does not exist
     output_folder = "output"
@@ -74,7 +76,6 @@ def use_tflite_model(name, img_path):
 
 
 def main():
-
     model_name = "final_model.tflite"
     image_folder = "imgs"
 
@@ -86,6 +87,7 @@ def main():
         if image_name.lower().endswith('.png'):
             print(f"Processing: {image_path}")
             use_tflite_model(model_name, image_path)
+
 
 if __name__ == "__main__":
     main()
