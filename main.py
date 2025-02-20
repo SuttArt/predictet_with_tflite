@@ -62,7 +62,15 @@ def use_tflite_model(name, img_path):
     img_cv2 = cv2.resize(image, (resize_factor * img_width, resize_factor * img_height), interpolation=cv2.INTER_NEAREST)
 
     cv2.drawMarker(img_cv2, (x * resize_factor, y * resize_factor), color, cv2.MARKER_CROSS, resize_factor * 2, max(2, resize_factor))
-    cv2.imwrite(img_path[:-4] + "_out.png", img_cv2)
+
+
+    # Create output folder if it does not exist
+    output_folder = "output"
+    os.makedirs(output_folder, exist_ok=True)
+
+    # Save output image in the output folder
+    output_path = os.path.join(output_folder, os.path.basename(img_path)[:-4] + "_out.png")
+    cv2.imwrite(output_path, img_cv2)
 
 
 def main():
